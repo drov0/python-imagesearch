@@ -7,7 +7,7 @@ import time
 
 '''
 
-Converts the tuple region (topx, topy, bottomx, bottomy)
+grabs a region (topx, topy, bottomx, bottomy)
 to the tuple (topx, topy, width, height)
 
 input : a tuple containing the 4 coordinates of the region to capture
@@ -15,7 +15,7 @@ input : a tuple containing the 4 coordinates of the region to capture
 output : a PIL image of the area selected.
 
 '''
-def input_converter(region):
+def region_grabber(region):
     x1 = region[0]
     y1 = region[1]
     width = region[2]-x1
@@ -44,7 +44,7 @@ the top left corner coordinates of the element if found as an array [x,y] or [-1
 '''
 def imagesearcharea(image, x1,y1,x2,y2, precision=0.8, im=None) :
     if im is None :
-        im = input_converter(region=(x1, y1, x2, y2))
+        im = region_grabber(region=(x1, y1, x2, y2))
         #im.save('testarea.png') usefull for debugging purposes, this will save the captured region as "testarea.png"
 
     img_rgb = np.array(im)
@@ -53,7 +53,7 @@ def imagesearcharea(image, x1,y1,x2,y2, precision=0.8, im=None) :
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-    if (max_val < precision):
+    if max_val < precision:
         return [-1, -1]
     return max_loc
 
@@ -74,11 +74,11 @@ action : button of the mouse to activate : "left" "right" "middle", see pyautogu
 time : time taken for the mouse to move from where it was to the new position
 '''
 
-def click_image(image,pos,  action, time,offset=5):
+def click_image(image,pos,  action, timestamp,offset=5):
     img = cv2.imread(image)
     height, width, channels = img.shape
     pyautogui.moveTo(pos[0] + r(width / 2, offset), pos[1] + r(height / 2,offset),
-                     time)
+                     timestamp)
     pyautogui.click(button=action)
 
 
@@ -105,53 +105,56 @@ def imagesearch(image, precision=0.8):
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-    if (max_val < precision):
+    if max_val < precision:
         return [-1,-1]
     return max_loc
 
 
 
+'''
+Searchs for an image on screen continuously until it's found.
 
-def imagesearch_loop(image):
-    door_pos = imagesearch(image)
-    i = 0
-    while door_pos[0] == -1:
+input :
+image : path to the image file (see opencv imread for supported types)
+time : Waiting time after failing to find the image 
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.8
+
+returns :
+the top left corner coordinates of the element if found as an array [x,y] 
+
+'''
+def imagesearch_loop(image, timesample, precision=0.8):
+    pos = imagesearch(image, precision)
+    while pos[0] == -1:
         print(image+" not found, waiting")
-        time.sleep(r(0.5, 0.5))
-        door_pos = imagesearch(image)
-    return door_pos
-
-def waitforimage(image, timesample):
-    pos = imagesearch(image)
-
-    while(pos[0] == -1):
         time.sleep(timesample)
-        pos = imagesearch(image)
+        pos = imagesearch(image, precision)
     return pos
 
-def waitforimage_region(image, timesample, x1,y1,x2,y2):
-    pos = imagesearcharea(image, x1,y1,x2,y2)
+'''
+Searchs for an image on a region of the screen continuously until it's found.
 
-    while(pos[0] == -1):
+input :
+image : path to the image file (see opencv imread for supported types)
+time : Waiting time after failing to find the image 
+x1 : top left x value
+y1 : top left y value
+x2 : bottom right x value
+y2 : bottom right y value
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.8
+
+returns :
+the top left corner coordinates of the element as an array [x,y] 
+
+'''
+def imagesearch_region_loop(image, timesample, x1, y1, x2, y2, precision=0.8):
+    pos = imagesearcharea(image, x1,y1,x2,y2, precision)
+
+    while pos[0] == -1:
         time.sleep(timesample)
-        pos = imagesearcharea(image, x1, y1, x2, y2)
+        pos = imagesearcharea(image, x1, y1, x2, y2, precision)
     return pos
 
-# made to compare two images
-# input : array containing the pixels (rgb)
-def imagecompare(img_rgb, template, tolerance=0.8):
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template.shape[::-1]
-
-    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-    if max_val < tolerance:
-        return False
-    else:
-        return True
-
-    return max_val
 
 def r(num, rand):
     return num + rand*random.random()
