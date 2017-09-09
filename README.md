@@ -20,5 +20,5 @@ sudo pip3 install -r requirements.txt
 
 Windows :
 
-sudo pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 
