@@ -6,6 +6,7 @@ to your project.
 
 See example.py for examples. If you have any questions feel free to contact me.
 
+Documentation : https://steemit.com/python/@howo/image-recognition-for-automation-with-python
 
 ## Install :
 
