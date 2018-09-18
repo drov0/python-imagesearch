@@ -13,10 +13,15 @@ Documentation : https://steemit.com/python/@howo/image-recognition-for-automatio
 Linux :
 
 sudo pip3 install python3-xlib
+
 sudo apt-get install scrot
+
 sudo apt-get install python3-tk
+
 sudo apt-get install python3-dev
+
 sudo apt-get install  opencv-python
+
 sudo pip3 install -r requirements.txt
 
 Windows :
