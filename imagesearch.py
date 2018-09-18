@@ -132,6 +132,31 @@ def imagesearch_loop(image, timesample, precision=0.8):
     return pos
 
 '''
+Searchs for an image on screen continuously until it's found or max number of samples reached.
+
+input :
+image : path to the image file (see opencv imread for supported types)
+time : Waiting time after failing to find the image
+maxSamples: maximum number of samples before function times out.
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.8
+
+returns :
+the top left corner coordinates of the element if found as an array [x,y] 
+
+'''
+def imagesearch_numLoop(image, timesample, maxSamples, precision=0.8):
+    pos = imagesearch(image, precision)
+    count = 0
+    while pos[0] == -1:
+        print(image+" not found, waiting")
+        time.sleep(timesample)
+        pos = imagesearch(image, precision)
+        count = count + 1
+        if count>maxSamples:
+            break
+    return pos
+
+'''
 Searchs for an image on a region of the screen continuously until it's found.
 
 input :
@@ -155,6 +180,32 @@ def imagesearch_region_loop(image, timesample, x1, y1, x2, y2, precision=0.8):
         pos = imagesearcharea(image, x1, y1, x2, y2, precision)
     return pos
 
+'''
+Searches for an image on the screen and counts the number of occurrences.
+
+input :
+image : path to the target image file (see opencv imread for supported types)
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.9
+
+returns :
+the number of times a given image appears on the screen.
+optionally an output image with all the occurances boxed with a red outline.
+
+'''
+def imagesearch_count(image, precision=0.9):
+    img_rgb = pyautogui.screenshot()
+    img_rgb = np.array(img_rgb)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread(image, 0)
+    w, h = template.shape[::-1]
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    loc = np.where(res >= precision)
+    count = 0
+    for pt in zip(*loc[::-1]):  # Swap columns and rows
+        #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2) // Uncomment to draw boxes around found occurances
+        count = count + 1
+    #cv2.imwrite('result.png', img_rgb) // Uncomment to write output image with boxes drawn around occurances
+    return count
 
 def r(num, rand):
     return num + rand*random.random()
