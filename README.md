@@ -10,7 +10,7 @@ Documentation : https://steemit.com/python/@howo/image-recognition-for-automatio
 
 ## Install :
 
-Linux :
+### Linux :
 
 sudo pip3 install python3-xlib
 
@@ -24,7 +24,7 @@ sudo apt-get install  opencv-python
 
 sudo pip3 install -r requirements.txt
 
-Windows :
+### Windows :
 
 pip3 install -r requirements.txt
 
