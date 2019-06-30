@@ -28,3 +28,6 @@ sudo pip3 install -r requirements.txt
 
 pip3 install -r requirements.txt
 
+### MacOs : 
+
+I have not tested myself as I don't own a mac, but I did search how to do it and documented it in this issue : https://github.com/drov0/python-imagesearch/issues/5
