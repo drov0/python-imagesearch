@@ -30,4 +30,11 @@ pip3 install -r requirements.txt
 
 ### MacOs : 
 
-I have not tested myself as I don't own a mac, but I did search how to do it and documented it in this issue : https://github.com/drov0/python-imagesearch/issues/5
+brew install opencv
+pip3 install -U pyobjc-core
+pip3 install -U pyobjc
+git clone https://github.com/drov0/python-imagesearch.git
+cd python-imagesearch
+pip3 install -r requirements.txt
+
+I have not tested myself as I don't own a mac, but it was tested and documented in this issue : https://github.com/drov0/python-imagesearch/issues/5
