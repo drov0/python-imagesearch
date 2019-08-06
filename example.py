@@ -5,37 +5,37 @@ from imagesearch import *
 
 # This is intended to be used as examples to be copy pasted, do not run the whole file at once
 
-pos = imagesearch("github.png")
+pos = imagesearch("./github.png")
 if pos[0] != -1:
     print("position : ", pos[0], pos[1])
     pyautogui.moveTo(pos[0], pos[1])
 else:
     print("image not found")
 
-# search for the github logo continuously :
+# search for the github logo until found  :
 
-pos = imagesearch_loop("github.png", 0.5)
+pos = imagesearch_loop("./github.png", 0.5)
 
 print("image found ", pos[0], pos[1])
 
 # search for the logo on the 0,0,800,600 region
 #  (a rectangle starting from the top left going 800 pixels to the right and down 600 pixels)
 
-pos = imagesearcharea("github.png", 0, 0, 800, 600)
+pos = imagesearcharea("./github.png", 0, 0, 800, 600)
 if pos[0] != -1:
     print("position : ", pos[0], pos[1])
     pyautogui.moveTo(pos[0], pos[1])
 else:
     print("image not found")
 
-# the im parameter is usefull if you plan on looking for several different images without the need for recapturing the screen
+# the im parameter is useful if you plan on looking for several different images without the need for recapturing the screen
 # the screen capture being one of the most time consuming function it's a good way to optimize
 
 # non -optimized way :
 time1 = time.clock()
 for i in range(10):
-    imagesearcharea("github.png", 0, 0, 800, 600)
-    imagesearcharea("panda.png", 0, 0, 800, 600)
+    imagesearcharea("./github.png", 0, 0, 800, 600)
+    imagesearcharea("./panda.png", 0, 0, 800, 600)
 print(str(time.clock() - time1) + " seconds (non optimized)")
 
 # optimized way :
@@ -43,8 +43,8 @@ print(str(time.clock() - time1) + " seconds (non optimized)")
 time1 = time.clock()
 im = region_grabber((0, 0, 800, 600))
 for i in range(10):
-    imagesearcharea("github.png", 0, 0, 800, 600, 0.8, im)
-    imagesearcharea("panda.png", 0, 0, 800, 600, 0.8, im)
+    imagesearcharea("./github.png", 0, 0, 800, 600, 0.8, im)
+    imagesearcharea("./panda.png", 0, 0, 800, 600, 0.8, im)
 print(str(time.clock() - time1) + " seconds (optimized)")
 
 # sample output :
