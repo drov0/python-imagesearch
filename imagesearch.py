@@ -5,6 +5,7 @@ import random
 import time
 import platform
 import subprocess
+import os
 
 is_retina = False
 if platform.system() == "Darwin":
@@ -235,6 +236,32 @@ def imagesearch_count(image, precision=0.9):
         count = count + 1
     # cv2.imwrite('result.png', img_rgb) // Uncomment to write output image with boxes drawn around occurrences
     return count
+
+
+'''
+Get all screens on the provided folder and search them on screen.
+
+input :
+path : path of the folder with the images to be searched on screen
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.8
+
+returns :
+A dictionary where the key is the path to image file and the value is the position where was found.
+
+'''
+
+
+def imagesearch_from_folder(path, precision):
+    print(path)
+    imagesPos = {}
+    path = path if path[-1] == '/' or '\\' else path+'/'
+    valid_images = [".jpg",".gif",".png",".jpeg"]
+    files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f)) and os.path.splitext(f)[1].lower() in valid_images]
+    print(files)
+    for file in files:
+        pos = imagesearch(path+file, precision)
+        imagesPos[path+file] = pos
+    return imagesPos
 
 
 def r(num, rand):
