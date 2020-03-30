@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="python-imageseach-drov0",
-    version="1.0.3",
+    version="1.0.5",
     install_requires=requirements,
     author="Martin Lees",
     author_email="drov.fr@protonmail.com",
