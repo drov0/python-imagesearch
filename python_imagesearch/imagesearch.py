@@ -256,13 +256,10 @@ def imagesearch_from_folder(path, precision):
     path = path if path[-1] == '/' or '\\' else path+'/'
     valid_images = [".jpg", ".gif", ".png", ".jpeg"]
     files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f)) and os.path.splitext(f)[1].lower() in valid_images]
-    print(files)
     for file in files:
         pos = imagesearch(path+file, precision)
         imagesPos[path+file] = pos
     return imagesPos
-
-
 
 
 def r(num, rand):
