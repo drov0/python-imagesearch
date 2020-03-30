@@ -3,10 +3,9 @@
 it's a wrapper around pyautogui and opencv2, to allow you to easily add cross-platform image searching capabilities
 to your project.
 
+See the documentation for examples. If you have any questions feel free to contact me.
 
-See example.py for examples. If you have any questions feel free to contact me.
-
-Documentation : https://steemit.com/python/@howo/image-recognition-for-automation-with-python
+Documentation : https://brokencode.io/how-to-easily-image-search-with-python/
 
 ## Easy Example:
 
