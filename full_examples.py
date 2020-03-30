@@ -58,3 +58,16 @@ print(str(time.clock() - time1) + " seconds (optimized)")
 pos = imagesearch("github.png")
 if pos[0] != -1:
     click_image("github.png", pos, "right", 0.2, offset=5)
+
+# when you have various images to find on the screen, you can
+# use this function, it iterates through the files in the path
+# you provide and outputs an dictionary where the key is the path
+# to the file and the value is the position array.
+#
+# I create this to be used with the same image with different sizes,
+# so no matter the size it appears on the screen, i can find it.
+#
+# In this example it iterates through the main folder of the project
+# and find the panda.png and github.png
+
+print(str(imagesearch_from_folder('./', 0.8)))
