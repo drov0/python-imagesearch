@@ -115,7 +115,7 @@ the top left corner coordinates of the element if found as an array [x,y] or [-1
 
 def imagesearch(image, precision=0.8):
     with mss.mss() as sct:
-        im = sct.grab()
+        im = sct.grab(sct.monitors[1])
         if is_retina:
             im.thumbnail((round(im.size[0] * 0.5), round(im.size[1] * 0.5)))
         # im.save('testarea.png') useful for debugging purposes, this will save the captured region as "testarea.png"
