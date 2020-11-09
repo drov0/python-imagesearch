@@ -7,8 +7,8 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setuptools.setup(
-    name="python-imageseach-drov0",
-    version="1.0.6",
+    name="python-imagesearch-drov0",
+    version="1.1.0",
     install_requires=requirements,
     author="Martin Lees",
     author_email="drov.fr@protonmail.com",
@@ -22,5 +22,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.4',
+    python_requires='>=3.5',
 )
