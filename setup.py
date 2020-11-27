@@ -1,4 +1,5 @@
 import setuptools
+import sys
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -6,9 +7,10 @@ with open("README.md", "r") as fh:
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
+
 setuptools.setup(
-    name="python-imagesearch-drov0",
-    version="1.1.0",
+    name="python-imagesearch",
+    version="1.1.2",
     install_requires=requirements,
     author="Martin Lees",
     author_email="drov.fr@protonmail.com",

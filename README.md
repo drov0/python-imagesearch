@@ -7,21 +7,25 @@ See the documentation for examples. If you have any questions feel free to conta
 
 Documentation : https://brokencode.io/how-to-easily-image-search-with-python/
 
+This is the currently maintained package, so if you've come from
+https://pypi.org/project/python-imagesearch-drov0/
+or
+https://pypi.org/project/python-imageseach-drov0/
+
+you are at the right place
+
 ## Easy Example:
 
 ## Install:
 
-> pip install python-imageseach-drov0
+> pip install python-imagesearch
 
 You may need to install dependencies depending on your OS:
 
 ### Linux :
 ```
 sudo pip3 install python3-xlib
-sudo apt-get install scrot
-sudo apt-get install python3-tk
-sudo apt-get install python3-dev
-sudo apt install python3-opencv
+sudo apt-get install scrot python3-tk python3-dev python3-opencv
 ```
 ### Windows :
 
