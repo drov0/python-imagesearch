@@ -65,6 +65,8 @@ def imagesearcharea(image, x1, y1, x2, y2, precision=0.8, im=None):
     img_rgb = np.array(im)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread(image, 0)
+    if template is None:
+        raise FileNotFoundError('Image file not found: {}'.format(image))
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
@@ -92,6 +94,8 @@ time : time taken for the mouse to move from where it was to the new position
 
 def click_image(image, pos, action, timestamp, offset=5):
     img = cv2.imread(image)
+    if img is None:
+        raise FileNotFoundError('Image file not found: {}'.format(image))
     height, width, channels = img.shape
     pyautogui.moveTo(pos[0] + r(width / 2, offset), pos[1] + r(height / 2, offset),
                      timestamp)
@@ -122,6 +126,8 @@ def imagesearch(image, precision=0.8):
         img_rgb = np.array(im)
         img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
         template = cv2.imread(image, 0)
+        if template is None:
+            raise FileNotFoundError('Image file not found: {}'.format(image))
         template.shape[::-1]
 
         res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
@@ -231,6 +237,8 @@ def imagesearch_count(image, precision=0.9):
         img_rgb = np.array(img_rgb)
         img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
         template = cv2.imread(image, 0)
+        if template is None:
+            raise FileNotFoundError('Image file not found: {}'.format(image))
         w, h = template.shape[::-1]
         res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= precision)
