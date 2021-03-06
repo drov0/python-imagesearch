@@ -28,8 +28,8 @@ def region_grabber(region):
     if is_retina: region = [n * 2 for n in region]
     x1 = region[0]
     y1 = region[1]
-    width = region[2] - x1
-    height = region[3] - y1
+    width = region[2]
+    height = region[3]
 
     region = x1, y1, width, height
     with mss.mss() as sct:
@@ -229,24 +229,22 @@ optionally an output image with all the occurances boxed with a red outline.
 '''
 
 
-def imagesearch_count(image, precision=0.9):
+def imagesearch_count(image, precision=0.95):
     with mss.mss() as sct:
-        img_rgb = sct.grab()
+        im = sct.grab(sct.monitors[0])
         if is_retina:
-            img_rgb.thumbnail((round(img_rgb.size[0] * 0.5), round(img_rgb.size[1] * 0.5)))
-        img_rgb = np.array(img_rgb)
+            im.thumbnail((round(im.size[0] * 0.5), round(im.size[1] * 0.5)))
+        img_rgb = np.array(im)
         img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
         template = cv2.imread(image, 0)
         if template is None:
             raise FileNotFoundError('Image file not found: {}'.format(image))
-        w, h = template.shape[::-1]
+        template.shape[::-1]
         res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
         loc = np.where(res >= precision)
         count = 0
         for pt in zip(*loc[::-1]):  # Swap columns and rows
-            # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2) // Uncomment to draw boxes around found occurrences
             count = count + 1
-        # cv2.imwrite('result.png', img_rgb) // Uncomment to write output image with boxes drawn around occurrences
         return count
 
 

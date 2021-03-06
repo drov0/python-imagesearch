@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="python-imagesearch",
-    version="1.2.0",
+    version="1.2.1",
     install_requires=requirements,
     author="Martin Lees",
     author_email="drov.fr@protonmail.com",

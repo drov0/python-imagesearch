@@ -9,8 +9,6 @@ Documentation : https://brokencode.io/how-to-easily-image-search-with-python/
 
 This is the currently maintained package, so if you've come from
 https://pypi.org/project/python-imagesearch-drov0/
-or
-https://pypi.org/project/python-imageseach-drov0/
 
 you are at the right place
 
