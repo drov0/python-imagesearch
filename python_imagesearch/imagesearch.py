@@ -28,8 +28,8 @@ def region_grabber(region):
     if is_retina: region = [n * 2 for n in region]
     x1 = region[0]
     y1 = region[1]
-    width = region[2]
-    height = region[3]
+    width = region[2] - x1
+    height = region[3] - y1
 
     region = {"top": x1,"left": y1, "width": width, "height": height}
     with mss.mss() as sct:
