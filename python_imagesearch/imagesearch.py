@@ -31,7 +31,7 @@ def region_grabber(region):
     width = region[2]
     height = region[3]
 
-    region = x1, y1, width, height
+    region = {"top": x1,"left": y1, "width": width, "height": height}
     with mss.mss() as sct:
         return sct.grab(region)
 
