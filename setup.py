@@ -3,13 +3,10 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
-
 setuptools.setup(
     name="python-imagesearch",
-    version="1.2.1",
-    install_requires=requirements,
+    version="1.2.2",
+    install_requires=['opencv-python', 'numpy', 'python3_xlib', 'pyautogui', 'mss'],
     author="Martin Lees",
     author_email="drov.fr@protonmail.com",
     description="A wrapper around openCv to perform image searching",
