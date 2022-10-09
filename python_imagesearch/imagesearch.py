@@ -10,7 +10,7 @@ import mss
 
 is_retina = False
 if platform.system() == "Darwin":
-    is_retina = subprocess.call("system_profiler SPDisplaysDataType | grep 'retina'", shell=True) == 0
+    is_retina = subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0
 
 '''
 
