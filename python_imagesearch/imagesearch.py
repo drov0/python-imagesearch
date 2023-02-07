@@ -216,6 +216,37 @@ def imagesearch_region_loop(image, timesample, x1, y1, x2, y2, precision=0.8):
 
 
 '''
+Searchs for an image on a region of the screen continuously until it's found or max number of samples reached.
+
+input :
+image : path to the image file (see opencv imread for supported types)
+time : Waiting time after failing to find the image
+maxSamples: maximum number of samples before function times out.
+x1 : top left x value
+y1 : top left y value
+x2 : bottom right x value
+y2 : bottom right y value
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.8
+
+returns :
+the top left corner coordinates of the element as an array [x,y]
+'''
+
+
+def imagesearch_region_numLoop(image, timesample, maxSamples, x1, y1, x2, y2, precision=0.8):
+    pos = imagesearcharea(image, x1, y1, x2, y2, precision)
+    count = 0
+    while pos[0] == -1:
+        time.sleep(timesample)
+        pos = imagesearcharea(image, x1, y1, x2, y2, precision)
+        count = count + 1
+        if count > maxSamples:
+            break
+    return pos
+
+
+
+'''
 Searches for an image on the screen and counts the number of occurrences.
 
 input :
