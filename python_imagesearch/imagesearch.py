@@ -305,3 +305,25 @@ def imagesearch_from_folder(path, precision):
 
 def r(num, rand):
     return num + rand * random.random()
+
+'''
+Wrapper around imagesearch and click_image
+
+# TODO: optimize so that we only read the file once.
+
+input :
+image : path to the image file (see opencv imread for supported types)
+action : button of the mouse to activate : "left" "right" "middle", see pyautogui.click documentation for more info
+delay : time taken for the mouse to move from where it was to the new position
+precision : the higher, the lesser tolerant and fewer false positives are found default is 0.8
+'''
+
+def imagesearch_click(image, action, delay, offset=5, precision=0.8):
+    pos = imagesearch(image, precision)
+    img = cv2.imread(image)
+    if img is None:
+        raise FileNotFoundError('Image file not found: {}'.format(image))
+    height, width, channels = img.shape
+    pyautogui.moveTo(pos[0] + r(width / 2, offset), pos[1] + r(height / 2, offset),
+                     delay)
+    pyautogui.click(button=action)
