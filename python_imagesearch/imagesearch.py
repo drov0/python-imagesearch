@@ -347,6 +347,31 @@ def chi_2(l1, l2):
 
     return chi / len(l2)
 
+
+
+def channels_similarity(base, template, max_loc):
+    b_channels = [base[:, :, i] for i in range(3)]
+    t_channels = [template[:, :, i] for i in range(3)]
+    chis = [] # list with chi squared tests results
+    for b, t in zip(b_channels, t_channels): # for each channel, check if the color distributions are compatible
+        #b = np.reshape(b, (-1))
+        t = np.reshape(t, (-1))
+        n_classes = 10 # I chose 10 because of the rule of thumb with histograms (which is to use ~~ Total_number_of_observations bins,
+                       # in fact the function chi_2 scales the bins as if there were 100 pixels)
+        dx = 255 / n_classes # width of the bins
+        t_bins = [t[(k * dx <= t) & ((k+1) * dx > t)].shape[0] for k in range(n_classes)]
+        t_bins[n_classes - 1] += t[t == 255].shape[0] # every bin contains the number of pixels that have a value between k*dx and (k+1)*dx, k=0,1,...,9
+        b_zone = b[max_loc[1]: max_loc[1] + template.shape[1], max_loc[0]: max_loc[0] + template.shape[0]] # portion of the screen located by cv2.matchTemplate
+        b = np.reshape(b_zone, (-1))
+        b_bins = [b[(k * dx <= b) & ((k+1) * dx > b)].shape[0] for k in range(n_classes)]
+        b_bins[n_classes - 1] += b[b == 255].shape[0]
+        chi = chi_2(b_bins, t_bins)
+        chis.append(chi)
+    
+    return chis
+
+
+
 """
 Returns the coordinates of the given image but only if the colors match
 
@@ -357,7 +382,7 @@ precision : the higher, the lesser tolerant and fewer false positives are found 
 returns :
 the top left corner coordinates of the element if found as an array [x,y] or [-1,-1] if not
 """
-def colored_search(image, precision=0.8):
+def imagesearch_colored(image, precision=0.8):
     with mss.mss() as sct:
         im = sct.grab(sct.monitors[0])
         if is_retina:
@@ -372,29 +397,8 @@ def colored_search(image, precision=0.8):
         res = cv2.matchTemplate(cv2.cvtColor(base, cv2.COLOR_BGR2GRAY), cv2.cvtColor(template, cv2.COLOR_BGR2GRAY), cv2.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
-        b_channels = [base[:, :, i] for i in range(3)]
-        t_channels = [template[:, :, i] for i in range(3)]
+        chis = channels_similarity(base, template, max_loc)
 
-        chis = [] # list with chi squared tests results
-        for b, t in zip(b_channels, t_channels): # for each channel, check if the color distributions are compatible
-            #b = np.reshape(b, (-1))
-            t = np.reshape(t, (-1))
-
-            n_classes = 10 # I chose 10 because of the rule of thumb with histograms (which is to use ~~ Total_number_of_observations bins,
-                           # in fact the function chi_2 scales the bins as if there were 100 pixels)
-            dx = 255 / n_classes # width of the bins
-
-            t_bins = [t[(k * dx <= t) & ((k+1) * dx > t)].shape[0] for k in range(n_classes)]
-            t_bins[n_classes - 1] += t[t == 255].shape[0] # every bin contains the number of pixels that have a value between k*dx and (k+1)*dx, k=0,1,...,9
-
-            b_zone = b[max_loc[1]: max_loc[1] + template.shape[1], max_loc[0]: max_loc[0] + template.shape[0]] # portion of the screen located by cv2.matchTemplate
-            b = np.reshape(b_zone, (-1))
-            b_bins = [b[(k * dx <= b) & ((k+1) * dx > b)].shape[0] for k in range(n_classes)]
-            b_bins[n_classes - 1] += b[b == 255].shape[0]
-
-            chi = chi_2(b_bins, t_bins)
-            chis.append(chi)
-        
         if chis[0] < 5 and chis[1] < 5 and chis[2] < 5 and max_val > 0.8: # 5 is maybe a high threshold for a chi squared, but when the colors are different
                                                                           # it's easy to reach hundreds or more.
                                                                           # Anyway this value needs more testing to be tuned 
