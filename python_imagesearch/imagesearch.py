@@ -3,6 +3,7 @@ import numpy as np
 import pyautogui
 import random
 import time
+import json
 import platform
 import subprocess
 import os
@@ -10,7 +11,10 @@ import mss
 
 is_retina = False
 if platform.system() == "Darwin":
-    is_retina = subprocess.call("system_profiler SPDisplaysDataType | grep -i 'retina'", shell=True) == 0
+    profiler = subprocess.run(["system_profiler", "SPDisplaysDataType", "-json"], stdout=subprocess.PIPE, check=True)
+    monitors = json.loads(profiler.stdout)["SPDisplaysDataType"][0]["spdisplays_ndrvs"]
+    main_monitor = next(iter(monitor for monitor in monitors if "yes" in monitor.get("spdisplays_main", "")))
+    is_retina = "retina" in main_monitor.get("spdisplays_display_type", "")
 
 '''
 
